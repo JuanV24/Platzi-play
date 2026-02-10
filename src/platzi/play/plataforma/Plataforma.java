@@ -29,6 +29,14 @@ public class Plataforma {
         }
     }
 
+    public void MostrarTitulosForeach(){
+
+        contenido.forEach(pelicula -> {
+            System.out.println("Nombre de la pelicula: "+ pelicula.getTitulo() +"\n" +
+                    "Año de estreno: "+ "("+ pelicula.getFehaEstreno()+")" + "\n");
+        });
+    }
+
     public void Eliminar(Pelicula pelicula){
         this.contenido.remove(pelicula);
     }
@@ -56,6 +64,35 @@ public class Plataforma {
         //si no retornara null
         return  null;
 
+
+    }
+
+    public Pelicula BuscarTituloStream(String titulo){
+        return contenido.stream()
+                .filter(contenido -> contenido.getTitulo().equalsIgnoreCase(titulo))
+                .findFirst()
+                .orElse(null);
+
+        /*
+        * stream() recorre la listas de peliculas
+        * filter() filtra cada una de ellas por medio del titulo
+        * findFirst() Encuentra la primera
+        * orElse() segunda condición la cual si no la encuentra retornará nulll
+        * */
+
+
+    }
+
+    public List<Pelicula> BuscarporGenero(String genero){
+        return contenido.stream()
+                .filter(contenido -> contenido.getGenero().equalsIgnoreCase(genero))
+                .toList();
+
+        /*
+        * lo recorremos con stream
+        * hacemos el filtro con filter
+        * lo añadimos a la lista con toList()
+        * */
 
     }
 

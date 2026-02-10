@@ -4,6 +4,8 @@ import platzi.play.contenido.Pelicula;
 import platzi.play.plataforma.Plataforma;
 import platzi.play.plataforma.Usuario;
 import platzi.play.util.ScannerUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,7 +15,7 @@ public class Main {
     //final para constantes
     public static final String VERSION = "1.0.0";
     public static final String NOMBRE_PLATAFORMA = "Welcome Platzi play: ";
-    public static final int OPCION_SALIDA = 5;
+    public static final int OPCION_SALIDA = 6;
 
     public static void main(String[] args) {
         System.out.println(NOMBRE_PLATAFORMA + VERSION);
@@ -30,7 +32,8 @@ public class Main {
                     "2. MOSTRAR TODO \n" +
                     "3. BUSCAR POR TITULO \n" +
                     "4. ELIMINAR \n" +
-                    "5. SALIR");
+                    "5. BUSCAR POR GENERO \n"+
+                    "6. SALIR");
 
 
 
@@ -56,7 +59,7 @@ public class Main {
                     break;
                 case 2:
                     //Mostrando "t0do" el contenido
-                    plataforma.MostrarTitulos();
+                    plataforma.MostrarTitulosForeach();
                     break;
                 case 3:
                     //Buscando por título
@@ -65,12 +68,12 @@ public class Main {
                     String titulo = ScannerUtils.capturarTexto("Cual es el nombre del contenido");
 
                     //adquiriendo la pelicula retornada
-                    Pelicula peliculaBuscada = plataforma.BuscarTitulo(titulo);
+                    Pelicula peliculaBuscada = plataforma.BuscarTituloStream(titulo);
 
                     if(peliculaBuscada != null){
                         System.out.println(peliculaBuscada.obtenerFichaTecnica());
                     }else {
-                        System.out.println(titulo +"El nombre buscado no existe dentro de " +plataforma.getNombrePlataforma());
+                        System.out.println(titulo +" El nombre buscado no existe dentro de " +plataforma.getNombrePlataforma());
                     }
                     break;
                 case 4:
@@ -88,6 +91,22 @@ public class Main {
 
 
                     break;
+                case 5:
+
+                    //capturamos datos
+                    String generoBuscar = ScannerUtils.capturarTexto("Ingrese el genero de saber las peliculas");
+
+                    //lo guardamos en una lista
+                    List <Pelicula> contenidoPorGenero = plataforma.BuscarporGenero(generoBuscar);
+
+                    //Mensaje de que hemos encontrado algo
+                    System.out.println("Se encontraron:  "+ contenidoPorGenero.size() +" Peliculas");
+
+                    //recorremos la lista hecha con el contenido encontrado
+                    contenidoPorGenero.foreach( contenido -> System.out.println( contenido.obtenerFichaTecnica() ));
+
+                    break;
+
                 case OPCION_SALIDA:
                     //Saliendo del sistema
                     System.out.println("Saliendo de platzi play.....");
