@@ -103,7 +103,8 @@ public class Main {
                     System.out.println("Se encontraron:  "+ contenidoPorGenero.size() +" Peliculas");
 
                     //recorremos la lista hecha con el contenido encontrado
-                    contenidoPorGenero.foreach( contenido -> System.out.println( contenido.obtenerFichaTecnica() ));
+                    contenidoPorGenero.forEach(contenido -> System.out.println(contenido.obtenerFichaTecnica() ));
+
 
                     break;
 
