@@ -9,14 +9,14 @@ public class Pelicula {
 private String titulo;
 private String descripcion;
 private int duracion;
-private String genero;
+private Genero genero;
 private double calificacion;
 private boolean disponibilidad;
 //LocalDate para manejar las fechas
 private LocalDate fehaEstreno;
 
 //Constructor
-    public Pelicula (String titulo, int duracion, String genero, double calificacion, LocalDate fecha){
+    public Pelicula (String titulo, int duracion, Genero genero, double calificacion, LocalDate fecha){
         this.titulo = titulo;
         this.duracion = duracion;
         this.genero = genero;
@@ -64,7 +64,7 @@ private LocalDate fehaEstreno;
         return duracion;
     }
 
-    public String getGenero() {
+    public Genero getGenero() {
         return genero;
     }
 

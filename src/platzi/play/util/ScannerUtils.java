@@ -1,5 +1,7 @@
 package platzi.play.util;
 
+import platzi.play.contenido.Genero;
+
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -57,6 +59,29 @@ public static final Scanner SCANNER = new Scanner(System.in);
 
         //retornando la fecha
         return fecha;
+    }
+
+    public static Genero capturaGenero(String mensaje){
+
+        //Bucle para capturar los datos hasta que sea el correcto
+        while(true){
+
+            System.out.println(mensaje+ "Opciones:");
+            for(Genero genero : Genero.values()) {
+                System.out.println("-"+ genero.name());
+            }
+            System.out.println("Cual es tu eleccion?");
+            String entrada = SCANNER.nextLine();
+
+            try{
+                    return Genero.valueOf(entrada.toUpperCase());
+
+            }catch (IllegalArgumentException e){
+
+                System.out.println("Genero no aceptado");
+
+            }
+        }
     }
 
 }
