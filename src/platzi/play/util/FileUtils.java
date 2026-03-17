@@ -1,8 +1,9 @@
 package platzi.play.util;
 
+import platzi.play.contenido.Contenido;
+import platzi.play.contenido.Documental;
 import platzi.play.contenido.Genero;
 import platzi.play.contenido.Pelicula;
-import platzi.play.plataforma.Plataforma;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,8 +18,8 @@ public class FileUtils {
     public static final String NOMBRE_ARCHIVO = "contenido.txt";
     public static final String SEPARADOR = "|";
 
-    public static List<Pelicula> leerContenido(){
-        List<Pelicula> contenidos = new ArrayList<>();
+    public static List<Contenido> leerContenido(){
+        List<Contenido> contenidos = new ArrayList<>();
 
         //Manejando errores
         try {
@@ -27,15 +28,25 @@ public class FileUtils {
             lineas.forEach( contenido -> {
                 String[] datos = contenido.split("\\"+SEPARADOR);
 
-                if(datos.length == 5){
-                    String titulo = datos[0];
-                    int duracion = Integer.parseInt(datos[1]);
-                    Genero genero = Genero.valueOf(datos[2].toUpperCase());
-                    double calificacion = datos[3].isBlank() ? 0 : Double.parseDouble(datos[3]);
-                    LocalDate fechaEstreno = LocalDate.parse(datos[4]);
+                String tipo = datos[0];
 
-                    Pelicula pelicula = new Pelicula(titulo,duracion, genero, calificacion, fechaEstreno);
-                    contenidos.add(pelicula);
+                if(("PELICULA".equals(tipo) && datos.length == 6) || ("DOCUMENTAL".equals(tipo) && datos.length == 7)){
+                    String titulo = datos[1];
+                    int duracion = Integer.parseInt(datos[2]);
+                    Genero genero = Genero.valueOf(datos[3].toUpperCase());
+                    double calificacion = datos[4].isBlank() ? 0 : Double.parseDouble(datos[4]);
+                    LocalDate fechaEstreno = LocalDate.parse(datos[5]);
+
+                    Contenido contenidoNuevo ;
+
+                    if("PELICULA".equals(tipo))
+                    {
+                        contenidoNuevo = new Pelicula(titulo,duracion,genero,calificacion,fechaEstreno);
+                    }else{
+                            String narrador = datos[6];
+                            contenidoNuevo = new Documental(titulo,duracion,genero,calificacion,fechaEstreno,narrador);
+                    }
+                    contenidos.add(contenidoNuevo);
                 }
 
             });
@@ -49,12 +60,21 @@ public class FileUtils {
         return contenidos;
     }
 
-    public static void escribirContenido(Pelicula pelicula){
+    public static void escribirContenido(Contenido contenido){
         try {
-            String linea = String.join(SEPARADOR, pelicula.getTitulo(),
-                    String.valueOf(pelicula.getDuracion()), pelicula.getGenero().name(),
-                    String.valueOf(pelicula.getCalificacion()),
-                    pelicula.getFehaEstreno().toString());
+            String linea = String.join(SEPARADOR, contenido.getTitulo(),
+                    String.valueOf(contenido.getDuracion()), contenido.getGenero().name(),
+                    String.valueOf(contenido.getCalificacion()),
+                    contenido.getFehaEstreno().toString());
+
+            String lineaFinal;
+
+            if (contenido instanceof Documental documental){
+                lineaFinal = "DOCUMENTAL"+ SEPARADOR+  linea + SEPARADOR + documental.getNarrador();
+            }else{
+                lineaFinal = "PELICULA"+ SEPARADOR + linea ;
+            }
+
 
             //Ruta del archivo, la linea con los datos, salto de linea con separator, si el archivo no existe que lo cree, Agregue al final el contenido
             Files.writeString(Paths.get(NOMBRE_ARCHIVO),

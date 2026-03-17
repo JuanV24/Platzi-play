@@ -1,8 +1,7 @@
 package platzi.play.plataforma;
 
-import platzi.play.contenido.Pelicula;
+import platzi.play.contenido.Contenido;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Usuario {
@@ -16,9 +15,9 @@ public class Usuario {
         this.fechaRegistro = LocalDateTime.now();
     }
 
-    public void ver(Pelicula pelicula){
+    public void ver(Contenido contenido){
         System.out.println(getNombre() + " Esta viendo: ");
-        pelicula.reproducir();
+        contenido.reproducir();
         System.out.println("Iniciaste sesión: " + getFechaRegistro());
     }
 
